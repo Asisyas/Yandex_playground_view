@@ -9,7 +9,7 @@ qx.Class.define("ya.apps.sandbox.PlaygroundFrame", {
     construct: function() {
         this.base(arguments, null);
         var contentElem = this.getContentElement();
-        contentElem.setAttribute("sandbox", "allow-top-navigation allow-scripts");
+        contentElem.setAttribute("sandbox");
     },
 
     members:{

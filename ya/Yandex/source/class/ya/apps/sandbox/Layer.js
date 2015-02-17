@@ -44,13 +44,17 @@ qx.Class.define("ya.apps.sandbox.Layer", {
         _createForm: function(callback) {
             ya.forms.CodeArea.loadAce(function() {
 
+                var mainMenu = new ya.apps.sandbox.MainMenu();
+                this.add(mainMenu);
+
+                // init apply button
+                var applyBtn = new qx.ui.form.Button(this.tr("Run playground"), "resource/ya/test.png");
+                mainMenu.add(applyBtn);
+                applyBtn.setEnabled(this.getCode() != "");
+
+
                 this.__splitPanel = new qx.ui.splitpane.Pane("horizontal");
                 this.add(this.__splitPanel, {flex: 1});
-                // init apply button
-                var applyBtn = new qx.ui.form.Button(this.tr("Run playground"), "yandexsandbox/test.png");
-
-                this.add(applyBtn, {flex: 1});
-                applyBtn.setEnabled(this.getCode() != "");
 
                 // Play source
                 applyBtn.addListener("execute", function() {
