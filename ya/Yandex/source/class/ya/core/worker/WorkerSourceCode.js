@@ -8,7 +8,7 @@ qx.Class.define("ya.core.worker.WorkerSourceCode", {
 
     members: {
         /**
-         * Return
+         * Code in the blob
          * @override
          */
         getCode: function() {

@@ -1,11 +1,12 @@
 /**
  * Created by kost on 17.02.15.
+ * Abstract class to generate code for the class "ya.core.worker.Worker"
  */
-
-
 qx.Class.define("ya.core.worker.BaseWorkerCode", {
 
     extend: qx.core.Object,
+
+    type: "abstract",
 
     properties: {
 
