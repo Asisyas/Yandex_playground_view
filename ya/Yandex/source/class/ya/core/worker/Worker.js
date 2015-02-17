@@ -9,11 +9,17 @@ qx.Class.define("ya.core.worker.Worker", {
     events: {
         "start"         :   "qx.event.type.Data",
         "terminate"     :   "qx.event.type.Data",
+        "reload"        :   "qx.event.type.Data",
         "message"       :   "qx.event.type.Data"
     },
 
     construct: function() {
         this.base(arguments);
+
+        if(!window.Worker) {
+            throw new Error("Not supported");
+        }
+
         this.__status = false;
         this._registerListeners();
     },
@@ -26,6 +32,9 @@ qx.Class.define("ya.core.worker.Worker", {
 
         __status: null,
 
+        /**
+         * window.Worker
+         */
         __worker: null,
 
         terminate: function() {
@@ -35,12 +44,14 @@ qx.Class.define("ya.core.worker.Worker", {
             this.__worker.terminate();
             this.__worker = undefined;
             this.__status = false;
+            this.fireDataEvent("terminate");
         },
 
         reload: function() {
             if(this.__status != true) {
                 return;
             }
+            this.fireDataEvent("reload");
             this.terminate();
             this._start();
         },
@@ -51,6 +62,8 @@ qx.Class.define("ya.core.worker.Worker", {
             }
 
             var code = this.getCode();
+
+            this.fireDataEvent("start");
 
         },
 
