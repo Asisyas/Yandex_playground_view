@@ -78,8 +78,9 @@ qx.Class.define("ya.apps.sandbox.Layer", {
 
                 // init playground iframe
                 var playground = new ya.apps.sandbox.PlaygroundFrame();
-
                 this.__splitPanel.add(playground,2);
+                //playground.setContent("<a href='#'> хыхы </a>")
+
                 this.__playground = playground;
 
                 callback.call(this);

@@ -28,14 +28,14 @@ qx.Class.define("ya.Application", {
             this.base(arguments);
 
             // Enable logging in debug variant
-            if (qx.core.Environment.get("qx.debug"))
-            {
+            if (qx.core.Environment.get("qx.debug")) {
                 // support native logging capabilities, e.g. Firebug for Firefox
                 qx.log.appender.Native;
                 // support additional cross-browser console. Press F7 to toggle visibility
                 qx.log.appender.Console;
             }
 
+            /*
             var worker  = new ya.core.worker.Worker();
 
             worker.addListener("change_status", function(e) {
@@ -47,12 +47,20 @@ qx.Class.define("ya.Application", {
                 worker.terminate();
             }, this);
 
+            worker.addListener("start", function() {
+                worker.call(new qx.core.Object());
+            }, this);
+
+            worker.addListener("error", function() {
+                worker.terminate();
+            }, this);
+
             var code    = new ya.core.worker.WorkerSourceCode();
-            var source = "postMessage(1)";
+            var source = "onmessage = function(e) { postMessage(e); }";
             code.setSource(source);
 
             worker.setCode(code);
-            worker.start();
+            worker.start();*/
 
 
             var sandbox = new ya.apps.sandbox.Sandbox();

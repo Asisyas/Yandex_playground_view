@@ -113,6 +113,7 @@ qx.Class.define("ya.core.worker.Worker", {
 
             this.fireDataEvent("call", message);
             this.__worker.postMessage(message);
+
             return true;
         },
 
@@ -244,6 +245,7 @@ qx.Class.define("ya.core.worker.Worker", {
 
     destruct: function() {
         this.base(arguments);
+        this.terminate();
         this.__status = null;
         this.__worker = undefined;
     }
