@@ -70,16 +70,15 @@ qx.Class.define("ya.core.worker.Worker", {
         terminate: function() {
             var runStatus       =   this.getStatusCode("run"),
                 terminateStatus =   this.getStatusCode("terminate"),
-                currentStatus   =   this.__status;
+                currentStatus   =   this.__status,
+                invalidStatus   =   runStatus | terminateStatus;
 
-            if(currentStatus & runStatus != runStatus ) {
-                return;
+            if(currentStatus && !invalidStatus & currentStatus) {;
+                this.__worker.terminate();
             }
-
-            this.__worker.terminate();
             this.__worker = undefined;
 
-            currentStatus ^= currentStatus & runStatus == runStatus ? runStatus : 0;
+            currentStatus ^= currentStatus & runStatus ? runStatus : 0;
             currentStatus |= terminateStatus;
             this._setStatus(currentStatus);
         },
@@ -88,18 +87,13 @@ qx.Class.define("ya.core.worker.Worker", {
          * Start application
          */
         start: function() {
-            this._start();
+            return this._start();
         },
 
         /**
          * Restart application
          */
         reload: function() {
-            var self = this.self(arguments);
-
-            if(this.__status != self.TERMINATE) {
-                return;
-            }
             this.fireDataEvent("reload");
             this.terminate();
             this._start();
@@ -158,8 +152,8 @@ qx.Class.define("ya.core.worker.Worker", {
                 this.getStatusCode("destroyed"),
                 currentStatus   =   this.__status;
 
-            if(currentStatus && currentStatus & impossibleStatus != 0) {
-                throw new Error("WTF");
+            if(currentStatus && currentStatus & impossibleStatus) {
+                return false;
             }
 
             try {
@@ -168,8 +162,10 @@ qx.Class.define("ya.core.worker.Worker", {
                 this.__worker.onerror   = qx.lang.Function.bind(this._onError,      this);
                 this.fireDataEvent("start");
                 this._setStatus(this.getStatusCode("run"));
+                return true;
             } catch(e) {
                 this._setStatus(this.getStatusCode("error"), null, e);
+                return false;
             }
         },
 

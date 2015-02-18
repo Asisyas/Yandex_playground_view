@@ -50,6 +50,7 @@ qx.Class.define("ya.Application", {
             var code    = new ya.core.worker.WorkerSourceCode();
             var source = "postMessage(1)";
             code.setSource(source);
+
             worker.setCode(code);
             worker.start();
 
