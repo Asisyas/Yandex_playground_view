@@ -36,6 +36,24 @@ qx.Class.define("ya.Application", {
                 qx.log.appender.Console;
             }
 
+            var worker  = new ya.core.worker.Worker();
+
+            worker.addListener("change_status", function(e) {
+                console.log("STATUS", e.getData().code);
+            }, this);
+
+            worker.addListener("message", function(e) {
+                console.log("MESSAGE: " , e.getData());
+                worker.terminate();
+            }, this);
+
+            var code    = new ya.core.worker.WorkerSourceCode();
+            var source = "postMessage(1)";
+            code.setSource(source);
+            worker.setCode(code);
+            worker.start();
+
+
             var sandbox = new ya.apps.sandbox.Sandbox();
             sandbox.start(qx.lang.Function.bind(function(){
                 var doc = this.getRoot();

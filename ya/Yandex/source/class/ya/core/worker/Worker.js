@@ -12,7 +12,8 @@ qx.Class.define("ya.core.worker.Worker", {
         "reload"        :   "qx.event.type.Data",
         "message"       :   "qx.event.type.Data",
         "call"          :   "qx.event.type.Data",
-        "error"         :   "qx.event.type.Data"
+        "error"         :   "qx.event.type.Data",
+        "change_status" :   "qx.event.type.Data"
     },
 
     statics: {
@@ -56,7 +57,7 @@ qx.Class.define("ya.core.worker.Worker", {
         /**
          * {Number}
          */
-        __status: null,
+        __status: 0,
 
         /**
          * window.Worker
@@ -67,24 +68,26 @@ qx.Class.define("ya.core.worker.Worker", {
          * Terminate application
          */
         terminate: function() {
-            if(this.__status != true) {
+            var runStatus       =   this.getStatusCode("run"),
+                terminateStatus =   this.getStatusCode("terminate"),
+                currentStatus   =   this.__status;
+
+            if(currentStatus & runStatus != runStatus ) {
                 return;
             }
-            var self = this.self(arguments);
+
             this.__worker.terminate();
             this.__worker = undefined;
-            this.__status = self.STATUS_TERMINATE;
-            this.fireDataEvent("terminate");
+
+            currentStatus ^= currentStatus & runStatus == runStatus ? runStatus : 0;
+            currentStatus |= terminateStatus;
+            this._setStatus(currentStatus);
         },
 
         /**
          * Start application
          */
         start: function() {
-            var self = this.self(arguments);
-            if(!(self & self.STATUS_READY)) {
-                throw new Error("The code is not initialized or it contains errors");
-            }
             this._start();
         },
 
@@ -145,19 +148,75 @@ qx.Class.define("ya.core.worker.Worker", {
 
         /**
          * Load code and run Worker
+         * @todo: In any case, write the test for the "bad" start
          * @private
          */
         _start: function() {
-            var impossibleStatus = this.getStatusCode("run");
-            if(this.__status & impossibleStatus == impossibleStatus) {
+            var impossibleStatus =
+                this.getStatusCode("run") |
+                this.getStatusCode("error") |
+                this.getStatusCode("destroyed"),
+                currentStatus   =   this.__status;
+
+            if(currentStatus && currentStatus & impossibleStatus != 0) {
                 throw new Error("WTF");
             }
 
-            this.__worker = new Worker(this.getCode().getCode());
-            this.__worker.onmessage = qx.lang.Function.bind(this._onMessage,    this);
-            this.__worker.onerror   = qx.lang.Function.bind(this._onError,      this);
-            this.fireDataEvent("start");
+            try {
+                this.__worker = new Worker(this.getCode().getCode());
+                this.__worker.onmessage = qx.lang.Function.bind(this._onMessage,    this);
+                this.__worker.onerror   = qx.lang.Function.bind(this._onError,      this);
+                this.fireDataEvent("start");
+                this._setStatus(this.getStatusCode("run"));
+            } catch(e) {
+                this._setStatus(this.getStatusCode("error"), null, e);
+            }
+        },
 
+        /**
+         * Change application status
+         * @param code  {Number}        - status code
+         * @param data  {null|Object}   - Event data
+         * @param error {null|Error}    - Error object
+         * @private
+         */
+        _setStatus: function(code, data, error) {
+            if(this.__status == code) {
+                return;
+            }
+
+            this.__status = code;
+            this.fireDataEvent("change_status", {
+                code    :   code,
+                data    :   data,
+                error   :   error
+            });
+        },
+
+        /**
+         * Trigger
+         * @param e
+         * @private
+         */
+        _onChangeCode: function(e) {
+            var curr        =   e.getData(),
+                old         =   e.getOldData(),
+                currStatus  =   this.__status,
+                statusReady =   this.getStatusCode("ready"),
+                statusError =   this.getStatusCode("error"),
+                currentCode =   !curr || curr.getCode(),
+                oldCode     =   !old  || old.getCode();
+
+            if(!currentCode || currentCode == null || currentCode.length < 1) {
+                currStatus ^= currStatus & statusReady ? statusReady : 0;
+            } else if(oldCode == currentCode && currStatus & statusError != 0) {
+                return;
+            } else {
+                currStatus |= statusReady;
+                currStatus ^= currStatus & statusError ? statusError : 0;
+            }
+
+            this._setStatus(currStatus, null, null);
         },
 
         /**
@@ -183,11 +242,12 @@ qx.Class.define("ya.core.worker.Worker", {
          * @private
          */
         _registerListeners: function() {
-            this.addListener("change_code",     this.reload,    this);
+            this.addListener("change_code",     this._onChangeCode,    this);
         }
     },
 
     destruct: function() {
+        this.base(arguments);
         this.__status = null;
         this.__worker = undefined;
     }

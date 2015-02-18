@@ -12,7 +12,8 @@ qx.Class.define("ya.core.worker.WorkerSourceCode", {
          * @override
          */
         getCode: function() {
-            var blob = new Blob(this.getSource() || "");
+
+            var blob = new Blob([this.getSource()] || "", {type: "text/javascript"});
             var urlGenerator =  window.URL || window.webkitURL;
             return urlGenerator.createObjectURL(blob);
         }
