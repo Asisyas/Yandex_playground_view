@@ -1,5 +1,6 @@
 /**
  * Created by kost on 17.02.15.
+ * @todo: 1 - Double start/stop - Exceptions
  */
 
 qx.Class.define("ya.core.worker.Worker", {
