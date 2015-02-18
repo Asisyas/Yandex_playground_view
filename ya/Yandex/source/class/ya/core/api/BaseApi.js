@@ -12,9 +12,9 @@ qx.Class.define("ya.core.api.BaseApi", {
     type: "abstract",
 
     events: {
-        worker_message  : "",
-        worker_error    : "",
-        error_logic     : ""
+        worker_message  : "qx.event.type.Data",
+        worker_error    : "qx.event.type.Data",
+        error_logic     : "qx.event.type.Data"
     },
 
     members: {
@@ -35,7 +35,7 @@ qx.Class.define("ya.core.api.BaseApi", {
             if(!w) {
                 return false;
             }
-            var rs = ya.core.worker.Worker.STATUS_READY;
+            var rs = ya.core.worker.Worker.STATUS_RUN;
             return (w.getStatus() & rs) == rs;
         },
 

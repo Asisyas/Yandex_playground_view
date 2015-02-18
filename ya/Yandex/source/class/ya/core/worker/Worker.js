@@ -73,7 +73,7 @@ qx.Class.define("ya.core.worker.Worker", {
                 currentStatus   =   this.__status,
                 invalidStatus   =   runStatus | terminateStatus;
 
-            if(currentStatus && !invalidStatus & currentStatus) {;
+            if(currentStatus && !invalidStatus & currentStatus) {
                 this.__worker.terminate();
             }
             this.__worker = undefined;
