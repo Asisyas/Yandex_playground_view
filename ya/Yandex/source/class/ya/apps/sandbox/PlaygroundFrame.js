@@ -14,10 +14,21 @@ qx.Class.define("ya.apps.sandbox.PlaygroundFrame", {
     },
 
     members:{
+
+        appendContent: function(content) {
+            var cnt = this.getContentElement().getAttribute("srcdoc") || "";
+            cnt += content;
+            this.setContent(cnt);
+        },
+
         setContent: function(content) {
             this.getContentElement().setAttribute("srcdoc", content);
         },
 
+        /**
+         * Block all events handlers
+         * @private
+         */
         _onLoad: function() {
             this.block();
             var contentElem = this.getContentElement();
