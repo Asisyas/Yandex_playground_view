@@ -24,7 +24,7 @@ qx.Class.define("ya.core.application.BaseApplication", {
         /**
          * Run application
          */
-        start: function(callback) {},
+        start: function(callback) { },
 
         /**
          * Stop application
@@ -41,7 +41,16 @@ qx.Class.define("ya.core.application.BaseApplication", {
          */
         getLayer: function() {
             throw new Error("Method must be rewrite");
+        },
+
+        getControllers: function() {
+
         }
     }
 
 });
+
+
+
+
+

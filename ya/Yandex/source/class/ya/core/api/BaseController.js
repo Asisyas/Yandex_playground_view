@@ -5,7 +5,7 @@
  * @todo: Need unit tests
  */
 
-qx.Class.define("ya.core.api.BaseApi", {
+qx.Class.define("ya.core.api.BaseController", {
 
     extend: qx.core.Object,
 
@@ -17,13 +17,21 @@ qx.Class.define("ya.core.api.BaseApi", {
         error_logic     : "qx.event.type.Data"
     },
 
+
+    construct: function() {
+        this.base(arguments);
+    },
+
     members: {
 
+        __routes: {},
+
         /**
-         * Api controller name
+         * Return all routes from
+         * @returns {*}
          */
-        getControllerName: function() {
-            throw new Error("The method should be overridden");
+        getRoutes: function() {
+            return this.__routes;
         },
 
         /**
