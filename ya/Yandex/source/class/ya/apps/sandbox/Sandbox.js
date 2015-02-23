@@ -12,22 +12,15 @@ qx.Class.define("ya.apps.sandbox.Sandbox", {
 
         init: function() {
             this.base(arguments);
-            this._registerServices();
         },
 
         /**
          * Register app services
          * @private
          */
-        _registerServices: function() {
-            ya.core.Services.getInstance().addService(
-                //Register worker as service
-                {
-                    name: "sandbox.worker",
-                    clazz: ya.apps.sandbox.services.worker.WorkerService,
-                    args: null
-                }
-            );
+        registerServices: function() {
+            //Register worker as service
+            this._addService("sandbox.worker", ya.apps.sandbox.services.worker.WorkerService, null);
         },
 
         getLayer: function() {

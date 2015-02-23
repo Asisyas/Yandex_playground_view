@@ -37,7 +37,12 @@ qx.Class.define("ya.Application", {
 
             ya.core.Kernel.getInstance().init();
 
-            var source = "onmessage = function(e) { postMessage(e.data); }";
+            var yac = new ya.apps.sandbox.controllers.yandex.YandexMaps();
+            yac.geocodeAction("Минск", function(code, data) {
+                console.log(code, data);
+            });
+
+            /*var source = "onmessage = function(e) { postMessage(e.data); }";
             var worker  = ya.core.Services.getInstance().service("sandbox.worker").createWorker(source, true);
 
             worker.addListener("change_status", function(e) {
@@ -50,15 +55,24 @@ qx.Class.define("ya.Application", {
             }, this);
 
             worker.addListener("start", function() {
-                worker.call({a : 1, b: 2 });
+                var yac = new ya.apps.sandbox.controllers.yandex.YandexMaps();
+                yac.addListener("remote_request_success", function(e) {
+                    worker.call(e.getData());
+                });
+                yac.geocodeAction({geocode : "Минск"});
             }, this);
 
             worker.addListener("error", function(e) {
-                console.log(e);
                 worker.terminate();
             }, this);
 
             worker.start();
+            */
+            /*var geocoder = new ya.apps.sandbox.services.geocode.YandexGeocoder();
+            geocoder.geocode("Минск", function(code, data) {
+                console.log(code, data);
+            });
+            */
         }
     }
 });

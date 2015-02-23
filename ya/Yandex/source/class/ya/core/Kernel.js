@@ -9,10 +9,10 @@ qx.Class.define("ya.core.Kernel", {
     type: "singleton",
 
     events: {
-        load        : "qx.event.type.Data",
-        unload      : "qx.event.type.Data",
-        module_init    : "qx.event.type.Data",
-        module_destroy : "qx.event.type.Data"
+        load            : "qx.event.type.Data",
+        unload          : "qx.event.type.Data",
+        module_init     : "qx.event.type.Data",
+        module_destroy  : "qx.event.type.Data"
     },
 
     members: {
@@ -22,6 +22,7 @@ qx.Class.define("ya.core.Kernel", {
         init: function() {
             this._registerListeners();
             this._registerModules([
+                new ya.apps.geocoder.Geocoder(),
                 // init sandbox application
                 new ya.apps.sandbox.Sandbox()
             ]);

@@ -8,21 +8,24 @@ qx.Class.define("ya.test.WorkerTest", {
         /**
          * Here are some simple tests
          */
-        testMessage : function() {
-            var worker  = new ya.core.worker.Worker();
+        testWorker : function() {
+            var worker  = new ya.apps.sandbox.services.worker.Worker();
+            this.debug("Create WebWorker instance", worker);
             worker.addListener("message", function(e) {
                 this.resume(function(){
+                    var msg = e.getData().data;
+                    this.debug("Received message ", msg);
                     this.assertEquals(1, e.getData().data, "Test response");
                 }, this);
                 worker.terminate();
             }, this);
 
-            var code    = new ya.core.worker.WorkerSourceCode();
+            var code    = new ya.apps.sandbox.services.worker.WorkerSourceCode();
             var source = "postMessage(1)";
             code.setSource(source);
             worker.setCode(code);
             worker.start();
-
+            this.debug("Waiting... ");
             this.wait(5000);
         }
     }
