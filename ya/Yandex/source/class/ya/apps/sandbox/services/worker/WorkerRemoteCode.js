@@ -3,9 +3,9 @@
  * Generator links to remote code
  */
 
-qx.Class.define("ya.core.worker.WorkerRemoteCode", {
+qx.Class.define("ya.apps.sandbox.services.worker.WorkerRemoteCode", {
 
-    extend: ya.core.worker.BaseWorkerCode,
+    extend: ya.apps.sandbox.services.worker.BaseWorkerCode,
 
     members: {
         /**

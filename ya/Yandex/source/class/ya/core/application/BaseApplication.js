@@ -10,47 +10,29 @@ qx.Class.define("ya.core.application.BaseApplication", {
 
     events: {
 
-        BEFORE_INIT : "qx.event.type.Data",
+        init        : "qx.event.type.Data",
 
-        AFTER_INIT  : "qx.event.type.Data"
+        destroy     : "qx.event.type.Data"
     },
 
     members: {
 
-        __status: -1,
-
         __layer : null,
 
         /**
-         * Run application
+         * init application
+         * @param args {Map} - Map with config
          */
-        start: function(callback) { },
-
-        /**
-         * Stop application
-         */
-        stop: function(callback) {},
-
-        /**
-         * Get application status
-         */
-        status: function() {},
+        init: function(args) { },
 
         /**
          * @returns {null}
          */
         getLayer: function() {
             throw new Error("Method must be rewrite");
-        },
-
-        getControllers: function() {
-
         }
     }
 
 });
-
-
-
 
 

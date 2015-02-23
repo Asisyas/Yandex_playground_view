@@ -10,9 +10,24 @@ qx.Class.define("ya.apps.sandbox.Sandbox", {
 
         _layer: null,
 
-        start: function(callback) {
+        init: function() {
             this.base(arguments);
-            callback.call(this);
+            this._registerServices();
+        },
+
+        /**
+         * Register app services
+         * @private
+         */
+        _registerServices: function() {
+            ya.core.Services.getInstance().addService(
+                //Register worker as service
+                {
+                    name: "sandbox.worker",
+                    clazz: ya.apps.sandbox.services.worker.WorkerService,
+                    args: null
+                }
+            );
         },
 
         getLayer: function() {

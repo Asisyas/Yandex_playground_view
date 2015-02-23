@@ -2,7 +2,7 @@
  * Created by kost on 17.02.15.
  */
 
-qx.Class.define("ya.apps.sandbox.PlaygroundFrame", {
+qx.Class.define("ya.apps.sandbox.forms.PlaygroundFrame", {
 
     extend: qx.ui.embed.Iframe,
 

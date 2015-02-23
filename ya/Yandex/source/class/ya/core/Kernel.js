@@ -11,17 +11,19 @@ qx.Class.define("ya.core.Kernel", {
     events: {
         load        : "qx.event.type.Data",
         unload      : "qx.event.type.Data",
-        app_init    : "qx.event.type.Data",
-        app_destroy : "qx.event.type.Data"
+        module_init    : "qx.event.type.Data",
+        module_destroy : "qx.event.type.Data"
     },
 
     members: {
 
-        __apps: [],
+        __modules: [],
 
         init: function() {
             this._registerListeners();
-            this._registerApps([
+            this._registerModules([
+                // init sandbox application
+                new ya.apps.sandbox.Sandbox()
             ]);
         },
 
@@ -30,26 +32,26 @@ qx.Class.define("ya.core.Kernel", {
          * @param apps
          * @private
          */
-        _registerApps: function(apps) {
+        _registerModules: function(apps) {
             for(var i = 0; i < apps.length; i++) {
-                this._registerApp(apps[i]);
+                this._registerModule(apps[i]);
             }
         },
 
-        _registerApp: function(app) {
-            this._registerAppListeners(app);
+        _registerModule: function(app) {
+            this._registerModuleListeners(app);
             app.init();
-            this.__apps.push(app);
+            this.__modules.push(app);
             this.fireDataEvent("app_init", app);
         },
 
-        _registerAppListeners: function(app) {
+        _registerModuleListeners: function(app) {
 
         },
 
         _registerListeners: function() {
-            this.addListener("app_init",    function() {}, this);
-            this.addListener("app_destroy", function() {}, this);
+            this.addListener("module_init",    function() {}, this);
+            this.addListener("module_destroy", function() {}, this);
         }
     }
 

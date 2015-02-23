@@ -2,9 +2,9 @@
  * Created by kost on 17.02.15.
  */
 
-qx.Class.define("ya.core.worker.WorkerSourceCode", {
+qx.Class.define("ya.apps.sandbox.services.worker.WorkerSourceCode", {
 
-    extend: ya.core.worker.BaseWorkerCode,
+    extend: ya.apps.sandbox.services.worker.BaseWorkerCode,
 
     members: {
         /**

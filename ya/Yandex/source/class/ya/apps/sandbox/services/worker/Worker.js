@@ -3,7 +3,7 @@
  * @todo: 1 - Double start/stop - Exceptions
  */
 
-qx.Class.define("ya.core.worker.Worker", {
+qx.Class.define("ya.apps.sandbox.services.worker.Worker", {
 
     extend: qx.core.Object,
 
@@ -40,17 +40,12 @@ qx.Class.define("ya.core.worker.Worker", {
 
     construct: function() {
         this.base(arguments);
-
-        if(!ya.core.worker.Worker.canRun()) {
-            throw new Error("Not supported");
-        }
-
         this.__status = 0;
         this._registerListeners();
     },
 
     properties: {
-        code: { init: null, check: "ya.core.worker.BaseWorkerCode", event: "change_code" }
+        code: { init: null, check: "ya.apps.sandbox.services.worker.BaseWorkerCode", event: "change_code" }
     },
 
     members: {

@@ -1,8 +1,8 @@
 /**
  * Created by kost on 17.02.15.
- * Abstract class to generate code for the class "ya.core.worker.Worker"
+ * Abstract class to generate code for the class "ya.apps.sandbox.services.worker.Worker"
  */
-qx.Class.define("ya.core.worker.BaseWorkerCode", {
+qx.Class.define("ya.apps.sandbox.services.worker.BaseWorkerCode", {
 
     extend: qx.core.Object,
 

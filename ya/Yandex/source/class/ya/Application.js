@@ -35,8 +35,10 @@ qx.Class.define("ya.Application", {
                 qx.log.appender.Console;
             }
 
-            /*
-            var worker  = new ya.core.worker.Worker();
+            ya.core.Kernel.getInstance().init();
+
+            var source = "onmessage = function(e) { postMessage(e.data); }";
+            var worker  = ya.core.Services.getInstance().service("sandbox.worker").createWorker(source, true);
 
             worker.addListener("change_status", function(e) {
                 console.log("STATUS", e.getData().code);
@@ -48,26 +50,15 @@ qx.Class.define("ya.Application", {
             }, this);
 
             worker.addListener("start", function() {
-                worker.call(new qx.core.Object());
+                worker.call({a : 1, b: 2 });
             }, this);
 
-            worker.addListener("error", function() {
+            worker.addListener("error", function(e) {
+                console.log(e);
                 worker.terminate();
             }, this);
 
-            var code    = new ya.core.worker.WorkerSourceCode();
-            var source = "onmessage = function(e) { postMessage(e); }";
-            code.setSource(source);
-
-            worker.setCode(code);
-            worker.start();*/
-
-
-            var sandbox = new ya.apps.sandbox.Sandbox();
-            sandbox.start(qx.lang.Function.bind(function(){
-                var doc = this.getRoot();
-                doc.add(sandbox.getLayer(),  { edge : 0 });
-            }, this));
+            worker.start();
         }
     }
 });

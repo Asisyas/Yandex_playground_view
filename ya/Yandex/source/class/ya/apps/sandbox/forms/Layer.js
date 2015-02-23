@@ -2,7 +2,7 @@
  * Created by kost on 17.02.15.
  */
 
-qx.Class.define("ya.apps.sandbox.Layer", {
+qx.Class.define("ya.apps.sandbox.forms.Layer", {
 
     extend: qx.ui.container.Composite,
 

@@ -2,7 +2,7 @@
  * Created by kost on 17.02.15.
  */
 
-qx.Class.define("ya.apps.sandbox.MainMenu", {
+qx.Class.define("ya.apps.sandbox.forms.MainMenu", {
 
     extend : qx.ui.container.Composite,
 
