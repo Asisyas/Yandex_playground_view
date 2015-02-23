@@ -22,6 +22,11 @@ qx.Class.define("ya.apps.geocoder.services.YandexGeocoder", {
 
     members: {
 
+        /**
+         *
+         * @param name      - {String} Address location
+         * @param callback  - {Function}
+         */
         geocode: function(name, callback) {
             var data = {
                 geocode : name,
@@ -30,6 +35,12 @@ qx.Class.define("ya.apps.geocoder.services.YandexGeocoder", {
             this._call(data, callback);
         },
 
+        /**
+         * Create geocode request (JSONP)
+         * @param data      -   {Map}
+         * @param callback  -   {Function} callback
+         * @private
+         */
         _call: function(data, callback) {
             var clb = callback || new Function,
                 req = new qx.io.request.Jsonp(),
@@ -45,6 +56,12 @@ qx.Class.define("ya.apps.geocoder.services.YandexGeocoder", {
             req.send();
         },
 
+        /**
+         * Trigger when response ok
+         * @param callback
+         * @returns {Function}
+         * @private
+         */
         _createSuccessCallback: function(callback) {
             var st = this.self(arguments).ERROR_REQUEST_SUCCESS;
             return function(e) {
@@ -54,6 +71,13 @@ qx.Class.define("ya.apps.geocoder.services.YandexGeocoder", {
             };
         },
 
+        /**
+         * When response fail
+         * @param callback
+         * @param status
+         * @returns {Function}
+         * @private
+         */
         _createFailCallback: function(callback, status) {
             return function(e) {
                 var req     = e.getTarget();

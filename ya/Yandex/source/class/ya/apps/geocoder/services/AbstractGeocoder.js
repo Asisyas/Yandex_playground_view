@@ -1,5 +1,6 @@
 /**
  * Created by kost on 23.02.15.
+ * @todo: ya.apps.geocoder.services.AbstractGeocoderResponse
  */
 
 qx.Class.define("ya.apps.geocoder.services.AbstractGeocoder", {
