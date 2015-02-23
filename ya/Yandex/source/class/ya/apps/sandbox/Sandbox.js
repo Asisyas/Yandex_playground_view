@@ -32,7 +32,7 @@ qx.Class.define("ya.apps.sandbox.Sandbox", {
 
         getLayer: function() {
             if(!this._layer) {
-                this._layer = new ya.apps.sandbox.Layer();
+                this._layer = new ya.apps.sandbox.forms.Layer();
             }
             return this._layer;
         }

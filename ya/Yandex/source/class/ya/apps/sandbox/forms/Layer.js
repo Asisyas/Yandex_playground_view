@@ -44,7 +44,7 @@ qx.Class.define("ya.apps.sandbox.forms.Layer", {
         _createForm: function(callback) {
             ya.forms.CodeArea.loadAce(function() {
 
-                var mainMenu = new ya.apps.sandbox.MainMenu();
+                var mainMenu = new ya.apps.sandbox.forms.MainMenu();
                 this.add(mainMenu);
 
                 // init apply button
@@ -77,10 +77,8 @@ qx.Class.define("ya.apps.sandbox.forms.Layer", {
                 this.__codeArea = codeArea;
 
                 // init playground iframe
-                var playground = new ya.apps.sandbox.PlaygroundFrame();
+                var playground = new ya.apps.sandbox.forms.PlaygroundFrame();
                 this.__splitPanel.add(playground,2);
-                //playground.setContent("<a href='#'> хыхы </a>")
-
                 this.__playground = playground;
 
                 callback.call(this);
