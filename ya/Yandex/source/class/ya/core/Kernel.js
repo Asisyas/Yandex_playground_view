@@ -26,29 +26,51 @@ qx.Class.define("ya.core.Kernel", {
         /**
          * Fired when application module registered
          */
-        module_init     : "qx.event.type.Data",
-
-        /**
-         * Fired when application module destroyed
-         */
-        module_destroy  : "qx.event.type.Data"
+        app_init     : "qx.event.type.Data"
     },
 
     members: {
 
-        __modules: [],
+        __status: false,
+
+        __modules: {},
 
         /**
          * Init kernel modules
          * @todo: tests
          */
         init: function() {
+            this.debug("Load Kernel");
+
+            // Evil hack !!!
+            //@todo: Create normal initialization
+            if(this.__status) {
+                return;
+            }
+            this.__status = true;
             this._registerListeners();
             this._registerModules([
                 new ya.apps.geocoder.Geocoder(),
                 // init sandbox application
                 new ya.apps.sandbox.Sandbox()
             ]);
+        },
+
+        /**
+         *
+         * @returns {*}
+         */
+        getApps: function() {
+            return this.__modules;
+        },
+
+        /**
+         * Get application by name
+         * @param appName {String} Application name. See ya.core.application.BaseApplication
+         * @returns {*}
+         */
+        getApp: function(appName) {
+            return this.__modules[appName];
         },
 
         /**
@@ -62,15 +84,29 @@ qx.Class.define("ya.core.Kernel", {
             }
         },
 
+        /**
+         * Register application
+         * @param app
+         * @private
+         */
         _registerModule: function(app) {
             this._registerModuleListeners(app);
             app.init();
-            this.__modules.push(app);
+            var appName = app.getName();
+            if(this.__modules[appName]) {
+                throw new Error("Application " + appName + " already registered");
+            }
+
+            this.__modules[appName] = app;
             this.fireDataEvent("app_init", app);
         },
 
         _registerModuleListeners: function(app) {
+        },
 
+
+        _onModuleRegistered: function(e) {
+            this.debug("Register module " + e.getData().getName());
         },
 
         /**
@@ -78,8 +114,7 @@ qx.Class.define("ya.core.Kernel", {
          * @private
          */
         _registerListeners: function() {
-            this.addListener("module_init",    function() {}, this);
-            this.addListener("module_destroy", function() {}, this);
+            this.addListener("app_init",    this._onModuleRegistered, this);
         }
     }
 

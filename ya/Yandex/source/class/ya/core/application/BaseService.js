@@ -4,5 +4,10 @@
 
 qx.Class.define("ya.core.application.BaseService", {
     extend: qx.core.Object,
-    type: "abstract"
+    type: "abstract",
+
+    construct: function() {
+        this.base(arguments);
+        this.debug("Create new service instance");
+    }
 });

@@ -16,6 +16,9 @@ qx.Class.define("ya.apps.geocoder.Geocoder", {
             this._addService("geocoder.yandex", ya.apps.geocoder.services.yandex.YandexGeocoder, null);
         },
 
+        getName: function() {
+            return "Geocoder";
+        },
 
         getLayer: function() {
             return null;

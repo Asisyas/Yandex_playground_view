@@ -31,13 +31,16 @@ qx.Class.define("ya.core.application.BaseApplication", {
         },
 
         registerServices: function() {
-
         },
 
         /**
          * @returns {null}
          */
         getLayer: function() {
+            throw new Error("Method must be rewrite");
+        },
+
+        getName: function() {
             throw new Error("Method must be rewrite");
         },
 

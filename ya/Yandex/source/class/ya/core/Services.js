@@ -22,6 +22,11 @@ qx.Class.define("ya.core.Services", {
         error_init_service  : "qx.event.type.Data"
     },
 
+    construct: function() {
+        this.base(arguments);
+        this._registerListeners();
+    },
+
     members: {
 
         __services: {},
@@ -41,7 +46,7 @@ qx.Class.define("ya.core.Services", {
 
             var ss = this.__services;
             if(ss[name]) {
-                this.fireDataEvent("init_service", name);
+                this.fireDataEvent("error_init_service", name);
                 throw new Error("The service name is already registered.");
             }
             // Register service instance
@@ -56,7 +61,7 @@ qx.Class.define("ya.core.Services", {
          */
         _registerService: function(name, service) {
             this.__services[name]        = service;
-            this.fireDataEvent("init_service", service);
+            this.fireDataEvent("init_service", name);
         },
 
         /**
@@ -65,7 +70,37 @@ qx.Class.define("ya.core.Services", {
          * @returns {*}
          */
         service: function(name) {
+            this.debug("Get service " + name);
             return this.__services[name];
+        },
+
+        /**
+         * Trigger
+         * @param e
+         * @private
+         */
+        _onServiceInit: function(e) {
+            var s = e.getData();
+            this.debug("Registered service " + s);
+        },
+
+        /**
+         * Trigger
+         * @param e
+         * @private
+         */
+        _onServiceInitError: function(e) {
+            var s = e.getData();
+            this.error("Registered service " + s + " filed !");
+        },
+
+        /**
+         * Register triggers
+         * @private
+         */
+        _registerListeners: function() {
+            this.addListener("init_service",        this._onServiceInit,        this);
+            this.addListener("error_init_service",  this._onServiceInitError,   this);
         }
     }
 });

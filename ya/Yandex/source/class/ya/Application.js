@@ -36,11 +36,14 @@ qx.Class.define("ya.Application", {
             }
 
             ya.core.Kernel.getInstance().init();
+            var sb = ya.core.Kernel.getInstance().getApp("Yandex-Sandbox");
+            console.log(sb);
 
-            var yac = new ya.apps.sandbox.controllers.yandex.YandexMaps();
+            /*var yac = new ya.apps.sandbox.controllers.yandex.YandexMaps();
             yac.geocodeAction("Минск", function(code, data) {
                 console.log(code, data);
             });
+            */
 
             /*var source = "onmessage = function(e) { postMessage(e.data); }";
             var worker  = ya.core.Services.getInstance().service("sandbox.worker").createWorker(source, true);
