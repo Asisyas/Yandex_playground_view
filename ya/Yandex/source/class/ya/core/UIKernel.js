@@ -27,9 +27,6 @@ qx.Class.define("ya.core.UIKernel", {
          */
         __status        : false,
 
-
-        __displayed     : null,
-
         /**
          *
          * @param windowRoot {qx.ui.root.Application} Window Root window
@@ -51,6 +48,10 @@ qx.Class.define("ya.core.UIKernel", {
             this.debug("Load UI");
         },
 
+        /**
+         * Remove layout from root
+         * @param layout {qx.ui.core.LayoutItem}
+         */
         remove: function(layout) {
             var r = this.getRoot();
             if(!layout) {
@@ -65,7 +66,7 @@ qx.Class.define("ya.core.UIKernel", {
 
         /**
          * Display layout
-         * @param layout
+         * @param layout {qx.ui.core.LayoutItem}
          */
         display: function(layout) {
             var r = this.getRoot();
