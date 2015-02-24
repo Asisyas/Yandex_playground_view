@@ -36,8 +36,9 @@ qx.Class.define("ya.Application", {
             }
 
             ya.core.Kernel.getInstance().init();
+            ya.core.UIKernel.getInstance().init(this.getRoot());
+
             var sb = ya.core.Kernel.getInstance().getApp("Yandex-Sandbox");
-            console.log(sb);
 
             /*var yac = new ya.apps.sandbox.controllers.yandex.YandexMaps();
             yac.geocodeAction("Минск", function(code, data) {

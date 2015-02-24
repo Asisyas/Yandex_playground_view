@@ -31,9 +31,34 @@ qx.Class.define("ya.core.Kernel", {
 
     members: {
 
+        /**
+         *  {boolean}
+         */
         __status: false,
 
         __modules: {},
+
+        /**
+         *  {ya.core.UIKernel}
+         */
+        __ui: null,
+
+        /**
+         * Array with applications
+         * @todo: dynamic
+         * @private
+         */
+        _registerModules: function() {
+            var apps = [
+                new ya.apps.geocoder.Geocoder(),
+                // init sandbox application
+                new ya.apps.sandbox.Sandbox()
+            ];
+
+            for(var i = 0; i < apps.length; i++) {
+                this._registerModule(apps[i]);
+            }
+        },
 
         /**
          * Init kernel modules
@@ -45,15 +70,14 @@ qx.Class.define("ya.core.Kernel", {
             // Evil hack !!!
             //@todo: Create normal initialization
             if(this.__status) {
+                this.warn("Trying to duplicate initialization");
                 return;
             }
+
+            this.__ui = ya.core.UIKernel.getInstance();
             this.__status = true;
             this._registerListeners();
-            this._registerModules([
-                new ya.apps.geocoder.Geocoder(),
-                // init sandbox application
-                new ya.apps.sandbox.Sandbox()
-            ]);
+            this._registerModules();
         },
 
         /**
@@ -74,17 +98,6 @@ qx.Class.define("ya.core.Kernel", {
         },
 
         /**
-         * Array with applications
-         * @param apps
-         * @private
-         */
-        _registerModules: function(apps) {
-            for(var i = 0; i < apps.length; i++) {
-                this._registerModule(apps[i]);
-            }
-        },
-
-        /**
          * Register application
          * @param app
          * @private
@@ -101,10 +114,19 @@ qx.Class.define("ya.core.Kernel", {
             this.fireDataEvent("app_init", app);
         },
 
+        /**
+         *
+         * @param app
+         * @private
+         */
         _registerModuleListeners: function(app) {
         },
 
-
+        /**
+         * Trigger
+         * @param e
+         * @private
+         */
         _onModuleRegistered: function(e) {
             this.debug("Register module " + e.getData().getName());
         },
