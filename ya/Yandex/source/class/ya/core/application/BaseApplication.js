@@ -10,9 +10,20 @@ qx.Class.define("ya.core.application.BaseApplication", {
 
     events: {
 
+        /**
+         * Fired when module registered
+         */
         init        : "qx.event.type.Data",
 
-        destroy     : "qx.event.type.Data"
+        /**
+         * Fires when the module must be active
+         */
+        show        : "qx.event.type.Data",
+
+        /**
+         * Fires when the module must be inactive
+         */
+        hide        : "qx.event.type.Data"
     },
 
     construct: function() {
@@ -44,6 +55,20 @@ qx.Class.define("ya.core.application.BaseApplication", {
             throw new Error("Method must be rewrite");
         },
 
+        /**
+         * Fires "show" event
+         */
+        display: function() {
+            this.fireDataEvent("show", this);
+        },
+
+        /**
+         * Register app services
+         * @param name  {String}    service name
+         * @param clazz {class}     service class reference
+         * @param args  {Map|null}  constructor service options
+         * @private
+         */
         _addService: function(name, clazz, args) {
             ya.core.Services.getInstance().addService(
                 {

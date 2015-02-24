@@ -36,12 +36,20 @@ qx.Class.define("ya.core.Kernel", {
          */
         __status: false,
 
+        /**
+         * Map with modules
+         */
         __modules: {},
 
         /**
          *  {ya.core.UIKernel}
          */
         __ui: null,
+
+        /**
+         * {ya.core.application.BaseApplication} Current visible application
+         */
+        __activeModule: null,
 
         /**
          * Array with applications
@@ -81,7 +89,15 @@ qx.Class.define("ya.core.Kernel", {
         },
 
         /**
-         *
+         * Return UI kernel
+         * @returns {ya.core.UIKernel}
+         */
+        getUI: function() {
+            return this.__ui;
+        },
+
+        /**
+         * Map with applications
          * @returns {*}
          */
         getApps: function() {
@@ -103,28 +119,44 @@ qx.Class.define("ya.core.Kernel", {
          * @private
          */
         _registerModule: function(app) {
-            this._registerModuleListeners(app);
-            app.init();
+
             var appName = app.getName();
             if(this.__modules[appName]) {
                 throw new Error("Application " + appName + " already registered");
             }
-
+            this._registerModuleListeners(app);
+            app.init();
             this.__modules[appName] = app;
             this.fireDataEvent("app_init", app);
         },
 
         /**
-         *
+         * Create app listeners
          * @param app
          * @private
          */
         _registerModuleListeners: function(app) {
+            app.addListener("show",     this._onModuleActive,   this);
+            app.addListener("hide",     function(){},           this);
         },
 
         /**
+         *
+         * @param e {qx.event.type.Data}
+         * @private
+         */
+        _onModuleActive: function(e) {
+            var m               = e.getData(),
+                ui              = this.getUI(),
+                activeLayer     = this.__activeModule ? this.__activeModule.getLayer() : null,
+                currentLayer    = m.getLayer() || null;
+
+            !activeLayer  || ui.remove(activeLayer);
+            !currentLayer || ui.display(currentLayer);
+        },
+        /**
          * Trigger
-         * @param e
+         * @param e {qx.event.type.Data}
          * @private
          */
         _onModuleRegistered: function(e) {

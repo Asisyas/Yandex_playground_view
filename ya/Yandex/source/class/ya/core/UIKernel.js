@@ -1,5 +1,9 @@
 /**
- * Created by kost on 24.02.15.
+ * Created by kost on 24.02.15
+ * @todo: __windowRoot VS root !!!!! Приложение может быть как в полноценном окне, так и в любом другом.
+ *          Основной момент в том, чтобы дать возможность разделить эти 2 представления.
+ *          Как вариант - убрать зависимость от WindowRoot и полностью оперировать с root, но тогда должна быть гарантия в том,
+ *          что root будет либо инстансом qx.ui.root.Application, либо быть любым другим layout итемом, который связан с основным окном.
  */
 
 qx.Class.define("ya.core.UIKernel", {
@@ -53,7 +57,7 @@ qx.Class.define("ya.core.UIKernel", {
          * @param layout {qx.ui.core.LayoutItem}
          */
         remove: function(layout) {
-            var r = this.getRoot();
+            var r = this.getRoot() || this.__windowRoot;
             if(!layout) {
                 this.warn("empty layout");
             }
@@ -69,12 +73,12 @@ qx.Class.define("ya.core.UIKernel", {
          * @param layout {qx.ui.core.LayoutItem}
          */
         display: function(layout) {
-            var r = this.getRoot();
+            var r = this.getRoot() || this.__windowRoot;
             if(!layout || !r) {
                 this.warn("Logic warning");
                 return;
             }
-            r.add(layout);
+            r.add(layout, {edge: 0});
 
         },
 
@@ -91,7 +95,9 @@ qx.Class.define("ya.core.UIKernel", {
                 this.debug("Destroy old root");
                 this.__windowRoot.remove(o);
             }
-            this.__windowRoot.add(c, { edge: 0 });
+            if(this.__windowRoot != c) {
+                this.__windowRoot.add(c, { edge: 0 });
+            }
             this.debug("Init root");
         },
 

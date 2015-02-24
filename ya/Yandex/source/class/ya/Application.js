@@ -35,48 +35,15 @@ qx.Class.define("ya.Application", {
                 qx.log.appender.Console;
             }
 
-            ya.core.Kernel.getInstance().init();
-            ya.core.UIKernel.getInstance().init(this.getRoot());
+            var kernel = ya.core.Kernel.getInstance();
+            kernel.init();
+            // Init main root
+            kernel.getUI().init(this.getRoot());
+            // Init applications root
+            //kernel.getUI().setRoot(this.getRoot());
 
-            var sb = ya.core.Kernel.getInstance().getApp("Yandex-Sandbox");
-
-            /*var yac = new ya.apps.sandbox.controllers.yandex.YandexMaps();
-            yac.geocodeAction("Минск", function(code, data) {
-                console.log(code, data);
-            });
-            */
-
-            /*var source = "onmessage = function(e) { postMessage(e.data); }";
-            var worker  = ya.core.Services.getInstance().service("sandbox.worker").createWorker(source, true);
-
-            worker.addListener("change_status", function(e) {
-                console.log("STATUS", e.getData().code);
-            }, this);
-
-            worker.addListener("message", function(e) {
-                console.log("MESSAGE: " , e.getData());
-                worker.terminate();
-            }, this);
-
-            worker.addListener("start", function() {
-                var yac = new ya.apps.sandbox.controllers.yandex.YandexMaps();
-                yac.addListener("remote_request_success", function(e) {
-                    worker.call(e.getData());
-                });
-                yac.geocodeAction({geocode : "Минск"});
-            }, this);
-
-            worker.addListener("error", function(e) {
-                worker.terminate();
-            }, this);
-
-            worker.start();
-            */
-            /*var geocoder = new ya.apps.sandbox.services.geocode.YandexGeocoder();
-            geocoder.geocode("Минск", function(code, data) {
-                console.log(code, data);
-            });
-            */
+            // Example show application layer
+            kernel.getApp("Yandex-Sandbox").display();
         }
     }
 });
