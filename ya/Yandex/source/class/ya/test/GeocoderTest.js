@@ -9,7 +9,7 @@ qx.Class.define("ya.test.GeocoderTest", {
          * Test geocodding
          */
         testYandexGeocoder : function() {
-            var ygeo  = new ya.apps.geocoder.services.YandexGeocoder();
+            var ygeo  = new ya.apps.geocoder.services.yandex.YandexGeocoder();
             this.debug("Create Yandex geocoder", ygeo);
             ygeo.geocode("Минск", qx.lang.Function.bind(function(code, data) {
                 this.resume(function() {

@@ -1,5 +1,6 @@
 /**
  * Created by kost on 20.02.15.
+ * Container for storing references application modules
  */
 
 qx.Class.define("ya.core.Services", {
@@ -9,7 +10,15 @@ qx.Class.define("ya.core.Services", {
     type: "singleton",
 
     events: {
+
+        /**
+         * Fired when the service module is registered
+         */
         init_service        : "qx.event.type.Data",
+
+        /**
+         * when the service module is registered with errors
+         */
         error_init_service  : "qx.event.type.Data"
     },
 

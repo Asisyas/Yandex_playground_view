@@ -8,25 +8,69 @@ qx.Class.define("ya.apps.sandbox.services.worker.Worker", {
     extend: qx.core.Object,
 
     events: {
+
+        /**
+         * Fired when Worker start
+         */
         "start"         :   "qx.event.type.Data",
+
+        /**
+         * Fired when Worker terminate
+         */
         "terminate"     :   "qx.event.type.Data",
+
+        /**
+         * Fired when Worker reload
+         */
         "reload"        :   "qx.event.type.Data",
+
+        /**
+         * Fired when Worker received message
+         */
         "message"       :   "qx.event.type.Data",
+
+        /**
+         * Fired When a message is sent to Worker
+         */
         "call"          :   "qx.event.type.Data",
+
+        /**
+         * Fired when worker have some errors
+         */
         "error"         :   "qx.event.type.Data",
+
+        /**
+         * Fired when status changed
+         */
         "change_status" :   "qx.event.type.Data"
     },
 
     statics: {
 
+        /**
+         * Bitmask presence status with an terminate.
+         * Example: 0x1 | 0x3 - terminate with error
+         */
         STATUS_TERMINATE    :   0x1,
 
+        /**
+         * Bitmask presence status with an error
+         */
         STATUS_ERROR        :   0x2,
 
+        /**
+         * Bitmask presence status with an ready
+         */
         STATUS_READY        :   0x4,
 
+        /**
+         * When destroyed
+         */
         STATUS_DESTROYED    :   0x8,
 
+        /**
+         * itmask presence status with an run
+         */
         STATUS_RUN          :   0x10,
 
         /**

@@ -13,7 +13,7 @@ qx.Class.define("ya.apps.geocoder.Geocoder", {
     members: {
 
         registerServices: function() {
-            this._addService("geocoder.yandex", ya.apps.geocoder.services.YandexGeocoder, null);
+            this._addService("geocoder.yandex", ya.apps.geocoder.services.yandex.YandexGeocoder, null);
         },
 
 

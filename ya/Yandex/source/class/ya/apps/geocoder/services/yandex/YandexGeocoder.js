@@ -2,20 +2,35 @@
  * Created by kost on 23.02.15.
  */
 
-qx.Class.define("ya.apps.geocoder.services.YandexGeocoder", {
+qx.Class.define("ya.apps.geocoder.services.yandex.YandexGeocoder", {
 
     extend: ya.apps.geocoder.services.AbstractGeocoder,
 
     statics: {
 
+        /**
+         * Geocoder URL
+         */
         GEOCODE_URL             : "http://geocode-maps.yandex.ru/1.x/",
 
+        /**
+         * Fired when request completes without error and data has been received.
+         */
         ERROR_REQUEST_SUCCESS   : 0,
 
+        /**
+         * Fired when request completes with error.
+         */
         ERROR_REQUEST_FAIL      : 1,
 
+        /**
+         * Fired when request reaches timeout limit.
+         */
         ERROR_REQUEST_TIMEOUT   : 2,
 
+        /**
+         * Fired when request is aborted.
+         */
         ERROR_REQUEST_ABORT     : 3
 
     },
@@ -24,8 +39,8 @@ qx.Class.define("ya.apps.geocoder.services.YandexGeocoder", {
 
         /**
          *
-         * @param name      - {String} Address location
-         * @param callback  - {Function}
+         * @param name       {String} Address location
+         * @param callback   {Function}
          */
         geocode: function(name, callback) {
             var data = {
@@ -37,8 +52,8 @@ qx.Class.define("ya.apps.geocoder.services.YandexGeocoder", {
 
         /**
          * Create geocode request (JSONP)
-         * @param data      -   {Map}
-         * @param callback  -   {Function} callback
+         * @param data            {Map}
+         * @param callback        {Function} callback
          * @private
          */
         _call: function(data, callback) {
@@ -58,8 +73,8 @@ qx.Class.define("ya.apps.geocoder.services.YandexGeocoder", {
 
         /**
          * Trigger when response ok
-         * @param callback
-         * @returns {Function}
+         * @param callback  {Function}
+         * @returns         {Function}
          * @private
          */
         _createSuccessCallback: function(callback) {
@@ -73,9 +88,9 @@ qx.Class.define("ya.apps.geocoder.services.YandexGeocoder", {
 
         /**
          * When response fail
-         * @param callback
-         * @param status
-         * @returns {Function}
+         * @param callback  {Function}
+         * @param status    {Integer} Error status
+         * @returns         {Function}
          * @private
          */
         _createFailCallback: function(callback, status) {

@@ -1,5 +1,8 @@
 /**
  * Created by kost on 20.02.15.
+ *
+ * The kernel modules for observing
+ *
  */
 
 qx.Class.define("ya.core.Kernel", {
@@ -9,9 +12,25 @@ qx.Class.define("ya.core.Kernel", {
     type: "singleton",
 
     events: {
+
+        /**
+         * Fired when application Kernel loaded
+         */
         load            : "qx.event.type.Data",
+
+        /**
+         * Fired when application destroyed
+         */
         unload          : "qx.event.type.Data",
+
+        /**
+         * Fired when application module registered
+         */
         module_init     : "qx.event.type.Data",
+
+        /**
+         * Fired when application module destroyed
+         */
         module_destroy  : "qx.event.type.Data"
     },
 
@@ -19,6 +38,10 @@ qx.Class.define("ya.core.Kernel", {
 
         __modules: [],
 
+        /**
+         * Init kernel modules
+         * @todo: tests
+         */
         init: function() {
             this._registerListeners();
             this._registerModules([
@@ -50,6 +73,10 @@ qx.Class.define("ya.core.Kernel", {
 
         },
 
+        /**
+         * @todo:
+         * @private
+         */
         _registerListeners: function() {
             this.addListener("module_init",    function() {}, this);
             this.addListener("module_destroy", function() {}, this);
