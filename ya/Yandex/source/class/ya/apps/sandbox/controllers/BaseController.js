@@ -10,13 +10,31 @@ qx.Class.define("ya.apps.sandbox.controllers.BaseController", {
     extend: qx.core.Object,
 
     events: {
+        /**
+         * Fired when success
+         */
         "success"  : "qx.event.type.Data",
+
+        /**
+         * Fired when error
+         */
         "error"    : "qx.event.type.Data"
     },
 
     statics: {
+        /**
+         * Response success
+         */
         ERROR_NONE  :   0,
+
+        /**
+         * Error logic statuc
+         */
         ERROR_LOGIC :   1,
+
+        /**
+         *  Worker error
+         */
         ERROR_WORKER:   2
     },
 
@@ -32,19 +50,32 @@ qx.Class.define("ya.apps.sandbox.controllers.BaseController", {
         services: null,
 
         __routes: {},
-
+        /**
+         * Controller reference
+         * @returns {string}
+         */
         getName: function() {
             return "base";
         },
-
+        /**
+         * Register controller routing
+         * @private
+         */
         _registerRoutes: function() {
-            this.addRoute("controller_error",  this.errorLogicAction);
-            this.addRoute("worker_error",      this.controllerErrorAction);
-            this.addRoute("index",             this.indexAction);
+            // error logic action
+            this.addRoute("controller_error",   this.errorLogicAction);
+            // catch worker errors
+            this.addRoute("worker_error",       this.controllerErrorAction);
+            // default action
+            this.addRoute("index",              this.indexAction);
+            // insert html to iframe
+            this.addRoute("html",               this.htmlAction);
+            // append html to iframe
+            this.addRoute("append_html",        this.htmlAppendAction)
         },
 
         /**
-         *
+         *  if Worker send incorrect data
          */
         controllerErrorAction: function(workerData) {
             this.createWorkerAnswer(this.self(arguments).ERROR_LOGIC,
@@ -80,10 +111,18 @@ qx.Class.define("ya.apps.sandbox.controllers.BaseController", {
                 });
         },
 
+        /**
+         * Append html to sandbox iframe
+         * @param workerData {Map}
+         */
         htmlAppendAction : function(workerData) {
 
         },
 
+        /**
+         * Set data to sandbox iframe
+         * @param workerData {Map}
+         */
         htmlAction : function(workerData) {
 
         },
@@ -110,6 +149,7 @@ qx.Class.define("ya.apps.sandbox.controllers.BaseController", {
          * @private
          */
         addRoute: function(name, clbl) {
+            this.debug("Register route " + name);
             this.__routes[name] = qx.lang.Function.bind(clbl, this);
         },
 
@@ -121,6 +161,10 @@ qx.Class.define("ya.apps.sandbox.controllers.BaseController", {
             return this.__routes;
         },
 
+        /**
+         * Register triggers
+         * @private
+         */
         _registerListeners: function() {
         }
     }
