@@ -39,9 +39,6 @@ qx.Class.define("ya.Application", {
             kernel.init();
             // Init main root
             kernel.getUI().init(this.getRoot());
-            // Init applications root
-            //kernel.getUI().setRoot(this.getRoot());
-
             // Example show application layer
             kernel.getApp("Yandex-Sandbox").display();
         }

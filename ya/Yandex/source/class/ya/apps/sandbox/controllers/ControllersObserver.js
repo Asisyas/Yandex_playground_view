@@ -50,7 +50,32 @@ qx.Class.define("ya.apps.sandbox.controllers.ControllerObserver", {
          * @private
          */
         _onChangeWorker: function(e) {
+            var d   = e.getData(),
+                o   = e.getOldData();
 
+            if(o) {
+                this.debug("Remove old worker");
+                o.terminate();
+                o.dispose();
+            }
+            this._registerWorkerListeners(d);
+            this.debug("Change worker");
+        },
+
+        /**
+         * Controller listeners
+         * @param c {ya.apps.sandbox.controllers.BaseController}
+         * @private
+         */
+        _registerControllerListeners: function(c) {
+
+        },
+
+        _registerWorkerListeners: function(w) {
+            w.addListener("message");
+            w.addListener("error");
+            w.addListener("start");
+            w.addListener("terminate");
         },
 
         /**
@@ -60,6 +85,5 @@ qx.Class.define("ya.apps.sandbox.controllers.ControllerObserver", {
         _registerListeners: function() {
             this.addListener("change_worker",   this._onChangeWorker,   this);
         }
-
     }
 });

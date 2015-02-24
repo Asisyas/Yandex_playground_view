@@ -23,7 +23,6 @@ qx.Class.define("ya.apps.sandbox.Sandbox", {
             this._addService("sandbox.worker", ya.apps.sandbox.services.worker.WorkerService, null);
         },
 
-
         getName: function() {
             return "Yandex-Sandbox"
         },
