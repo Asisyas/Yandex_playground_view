@@ -146,10 +146,10 @@ qx.Class.define("ya.core.Kernel", {
          * @private
          */
         _onModuleActive: function(e) {
-            var m               = e.getData(),
-                ui              = this.getUI(),
-                activeLayer     = this.__activeModule ? this.__activeModule.getLayer() : null,
-                currentLayer    = m.getLayer() || null;
+            var m               = e.getData();
+            var ui              = this.getUI();
+            var activeLayer     = this.__activeModule ? this.__activeModule.getLayer() : null;
+            var currentLayer    = m.getLayer() || null;
 
             !activeLayer  || ui.remove(activeLayer);
             !currentLayer || ui.display(currentLayer);

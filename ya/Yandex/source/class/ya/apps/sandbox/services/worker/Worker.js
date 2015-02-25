@@ -113,7 +113,8 @@ qx.Class.define("ya.apps.sandbox.services.worker.Worker", {
                 currentStatus   =   this.__status,
                 invalidStatus   =   runStatus | terminateStatus;
 
-            if(currentStatus && !invalidStatus & currentStatus) {
+            if(currentStatus && invalidStatus & currentStatus == currentStatus) {
+                this.debug("Terminate");
                 this.__worker.terminate();
             }
             this.__worker = undefined;
@@ -135,6 +136,7 @@ qx.Class.define("ya.apps.sandbox.services.worker.Worker", {
          */
         reload: function() {
             this.fireDataEvent("reload");
+            this.debug("Reload");
             this.terminate();
             this._start();
         },
@@ -147,19 +149,19 @@ qx.Class.define("ya.apps.sandbox.services.worker.Worker", {
         call: function(message) {
             var status = this.__status;
             var code = this.getStatusCode("run");
-            if(status & code != code) {
+            if(status & code !== code) {
                 return false;
             }
 
             this.fireDataEvent("call", message);
+            this.debug("call", message);
             this.__worker.postMessage(message);
-
             return true;
         },
 
         /**
          * Current status
-         * @returns {null}
+         * @returns {Number}
          */
         getStatus: function() {
             return this.__status;
@@ -203,6 +205,7 @@ qx.Class.define("ya.apps.sandbox.services.worker.Worker", {
                 this.__worker.onerror   = qx.lang.Function.bind(this._onError,      this);
                 this.fireDataEvent("start");
                 this._setStatus(this.getStatusCode("run"));
+                this.debug("Start");
                 return true;
             } catch(e) {
                 this._setStatus(this.getStatusCode("error"), null, e);
@@ -284,10 +287,8 @@ qx.Class.define("ya.apps.sandbox.services.worker.Worker", {
     },
 
     destruct: function() {
-        this.base(arguments);
-        this.terminate();
+        this._disposeObjects("__worker");
         this.__status = null;
-        this.__worker = undefined;
     }
 
 });

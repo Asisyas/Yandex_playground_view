@@ -2,7 +2,7 @@
  * Created by kost on 24.02.15.
  */
 
-qx.Class.define("ya.apps.sandbox.controllers.ControllerObserver", {
+qx.Class.define("ya.apps.sandbox.controllers.ControllersObserver", {
 
     extend: qx.core.Object,
 
@@ -50,8 +50,8 @@ qx.Class.define("ya.apps.sandbox.controllers.ControllerObserver", {
          * @private
          */
         _onChangeWorker: function(e) {
-            var d   = e.getData(),
-                o   = e.getOldData();
+            var d   = e.getData();
+            var o   = e.getOldData();
 
             if(o) {
                 this.debug("Remove old worker");
@@ -72,10 +72,9 @@ qx.Class.define("ya.apps.sandbox.controllers.ControllerObserver", {
         },
 
         _registerWorkerListeners: function(w) {
-            w.addListener("message");
-            w.addListener("error");
-            w.addListener("start");
-            w.addListener("terminate");
+            w.addListener("message",    function(e) { console.log(e.getData()); this.getWorker().terminate()  },    this);
+            w.addListener("error",      function(e) { console.log(e.getData()); this.getWorker().terminate() },     this);
+            //w.addListener("terminate");
         },
 
         /**

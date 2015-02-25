@@ -88,8 +88,8 @@ qx.Class.define("ya.core.UIKernel", {
          * @private
          */
         _onChangeRoot: function(e) {
-            var с = e.getData(),
-                o = e.getOldData();
+            var c = e.getData();
+            var o = e.getOldData();
 
             if(o) {
                 this.debug("Destroy old root");

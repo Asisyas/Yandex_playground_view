@@ -57,14 +57,14 @@ qx.Class.define("ya.apps.geocoder.services.yandex.YandexGeocoder", {
          * @private
          */
         _call: function(data, callback) {
-            var clb = callback || new Function,
-                req = new qx.io.request.Jsonp(),
-                statics = this.self(arguments);
+            var clb = callback || new Function;
+            var req = new qx.io.request.Jsonp();
+            var statics = this.self(arguments);
 
             req.setUrl(this.self(arguments).GEOCODE_URL);
             req.addListenerOnce("success",      this._createSuccessCallback(clb),                              this);
             req.addListenerOnce("fail",         this._createFailCallback(clb, statics.ERROR_REQUEST_FAIL),     this);
-            req.addListenerOnce("abort",        this._createFailCallback(clb, statics.ERROR_REQUEST_ABORT),    this)
+            req.addListenerOnce("abort",        this._createFailCallback(clb, statics.ERROR_REQUEST_ABORT),    this);
             req.addListenerOnce("timeout",      this._createFailCallback(clb, statics.ERROR_REQUEST_TIMEOUT),  this);
 
             req.setRequestData(data);

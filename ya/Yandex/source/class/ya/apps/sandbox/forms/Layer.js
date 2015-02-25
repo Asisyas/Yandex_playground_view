@@ -31,6 +31,8 @@ qx.Class.define("ya.apps.sandbox.forms.Layer", {
 
         __applyBtn:     null,
 
+        __controllerObserver: null,
+
 
         getCode: function() {
             return this.__codeArea ? this.__codeArea.getCode(): "";
@@ -58,6 +60,7 @@ qx.Class.define("ya.apps.sandbox.forms.Layer", {
 
                 // Play source
                 applyBtn.addListener("execute", function() {
+                    this._startPlayground();
                     this.fireDataEvent("RUN_PLAYGROUND");
                 }, this);
                 // Change code
@@ -83,6 +86,13 @@ qx.Class.define("ya.apps.sandbox.forms.Layer", {
 
                 callback.call(this);
             }, this);
+        },
+
+        _startPlayground: function() {
+            var code = this.__codeArea.getCode();
+            var worker = ya.core.Services.getInstance().service("sandbox.worker").createWorker(code, true);
+            this.__controllerObserver = new ya.apps.sandbox.controllers.ControllersObserver(worker);
+            worker.start();
         },
 
         _registerListeners: function() {
