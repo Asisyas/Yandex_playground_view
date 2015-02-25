@@ -86,5 +86,11 @@
       }
     }
     */
+    "source-script" : {
+      "extend" : [ "profiling" ],
+      "environment" : {
+        "qx.debug.dispose" : true
+      }
+    }
   }
 }
