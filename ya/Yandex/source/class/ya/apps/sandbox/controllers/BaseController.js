@@ -10,6 +10,7 @@ qx.Class.define("ya.apps.sandbox.controllers.BaseController", {
     extend: qx.core.Object,
 
     events: {
+
         /**
          * Fired when success
          */
@@ -22,6 +23,7 @@ qx.Class.define("ya.apps.sandbox.controllers.BaseController", {
     },
 
     statics: {
+
         /**
          * Response success
          */
@@ -50,6 +52,7 @@ qx.Class.define("ya.apps.sandbox.controllers.BaseController", {
         services: null,
 
         __routes: {},
+
         /**
          * Controller reference
          * @returns {string}
@@ -57,6 +60,7 @@ qx.Class.define("ya.apps.sandbox.controllers.BaseController", {
         getName: function() {
             return "base";
         },
+
         /**
          * Register controller routing
          * @private
@@ -131,7 +135,6 @@ qx.Class.define("ya.apps.sandbox.controllers.BaseController", {
          * Create answer structure
          * @param code
          * @param data
-         * @returns {{code: (*|number), data: *}}
          */
         createWorkerAnswer: function(code, data) {
             var resp = {

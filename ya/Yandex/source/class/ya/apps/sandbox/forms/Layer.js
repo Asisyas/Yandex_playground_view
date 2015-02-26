@@ -1,5 +1,6 @@
 /**
  * Created by kost on 17.02.15.
+ *
  */
 
 qx.Class.define("ya.apps.sandbox.forms.Layer", {
@@ -91,8 +92,29 @@ qx.Class.define("ya.apps.sandbox.forms.Layer", {
         _startPlayground: function() {
             var code = this.__codeArea.getCode();
             var worker = ya.core.Services.getInstance().service("sandbox.worker").createWorker(code, true);
-            this.__controllerObserver = new ya.apps.sandbox.controllers.ControllersObserver(worker);
+            this.__controllerObserver = this._createControllerObserver(worker);
             worker.start();
+        },
+
+        /**
+         * @todo: temp.
+         * @param worker
+         * @returns {ya.apps.sandbox.controllers.ControllersObserver}
+         * @private
+         */
+        _createControllerObserver: function(worker) {
+            var co = new ya.apps.sandbox.controllers.ControllersObserver(worker);
+            this._registerObserverControllers(co);
+            return co;
+        },
+
+        /**
+         * Registration controllers in the observer
+         * @param cobserver {ya.apps.sandbox.controllers.ControllersObserver}
+         * @private
+         */
+        _registerObserverControllers: function(cobserver) {
+            cobserver.registerController(ya.core.ya.apps.sandbox.controllers.yandex.YandexMaps);
         },
 
         _registerListeners: function() {

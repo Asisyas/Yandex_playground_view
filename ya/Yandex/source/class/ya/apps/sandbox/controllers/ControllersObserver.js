@@ -13,6 +13,10 @@ qx.Class.define("ya.apps.sandbox.controllers.ControllersObserver", {
         worker: { init: null,   check: "ya.apps.sandbox.services.worker.Worker",    event: "change_worker" }
     },
 
+    /**
+     *
+     * @param worker {ya.apps.sandbox.services.worker.Worker}
+     */
     construct: function(worker) {
         this.base(arguments);
         this._registerListeners();
@@ -33,6 +37,15 @@ qx.Class.define("ya.apps.sandbox.controllers.ControllersObserver", {
                 var tmp = ccol[i];
                 this.registerController(tmp);
             }
+        },
+
+        /**
+         * Get all controllers references
+         * @returns {*}
+         * @private
+         */
+        _getControllersRefs: function() {
+            return this.__controllers;
         },
 
         /**
@@ -68,13 +81,45 @@ qx.Class.define("ya.apps.sandbox.controllers.ControllersObserver", {
          * @private
          */
         _registerControllerListeners: function(c) {
-
         },
 
+        _runController: function(name, method, args) {
+            var c = this._getControllersRefs();
+            var w = this.getWorker();
+            if(!c[name]) {
+
+            }
+        },
+
+        /**
+         * Event handler receiving a message from the Worker
+         * @param e {qx.event.type.Data}
+         * @private
+         */
+        _onWorkerMessage: function(e) {
+            var msgObj      = e.getData();
+            var msgData     = msgObj.data;
+            var cname       = msgData.controller;
+            var method      = msgData.method;
+            this._runController(cname, method, msgObj.data);
+        },
+
+        /**
+         * Event handler when inside Worker errors
+         * @param e {qx.event.type.Data}
+         * @private
+         */
+        _onWorkerError: function(e) {
+        },
+
+        /**
+         * Register worker events handlers
+         * @param w {ya.apps.sandbox.services.worker.Worker} current worker
+         * @private
+         */
         _registerWorkerListeners: function(w) {
-            w.addListener("message",    function(e) { console.log(e.getData()); this.getWorker().terminate()  },    this);
-            w.addListener("error",      function(e) { console.log(e.getData()); this.getWorker().terminate() },     this);
-            //w.addListener("terminate");
+            w.addListener("message",    this._onWorkerMessage,      this);
+            w.addListener("error",      this._onWorkerError,        this);
         },
 
         /**
