@@ -9,3 +9,19 @@ for further information.
 
 short:: is a standard qooxdoo GUI application
 copy_file:: tool/data/generator/needs_generation.js source/script/custom.js
+
+
+Testing API:
+
+onmessage = function(e) {
+    console.log('ANSWER', e);
+};
+
+postMessage({
+  controller: "yandex-maps",
+  action: "geocode",
+  data: {
+    geocode: "Минск"
+  }
+});
+

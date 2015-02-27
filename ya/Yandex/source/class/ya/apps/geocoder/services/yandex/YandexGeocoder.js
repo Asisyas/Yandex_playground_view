@@ -31,7 +31,15 @@ qx.Class.define("ya.apps.geocoder.services.yandex.YandexGeocoder", {
         /**
          * Fired when request is aborted.
          */
-        ERROR_REQUEST_ABORT     : 3
+        ERROR_REQUEST_ABORT     : 3,
+
+        /**
+         * String ref
+         * @returns {string}
+         */
+        getName: function() {
+            return 'yandex-geocoder';
+        }
 
     },
 

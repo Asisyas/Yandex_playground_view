@@ -88,11 +88,28 @@ qx.Class.define("ya.apps.sandbox.forms.Layer", {
             }, this);
         },
 
+        /**
+         * Start app event handler
+         * @private
+         */
         _startPlayground: function() {
-            var code = this.__codeArea.getCode();
+            var code = this.getCode();
             var worker = ya.core.Services.getInstance().service("sandbox.worker").createWorker(code, true);
-            this.__controllerObserver = new ya.apps.sandbox.controllers.ControllersObserver(worker);
+            this._initControllerManager(worker);
             worker.start();
+        },
+
+        /**
+         * Init manager
+         * @param worker
+         * @private
+         */
+        _initControllerManager: function(worker) {
+            if(this.__controllerObserver) {
+                this.__controllerObserver.setWorker(worker);
+            } else {
+                this.__controllerObserver = new ya.apps.sandbox.controllers.ControllerManager(worker);
+            }
         },
 
         _registerListeners: function() {

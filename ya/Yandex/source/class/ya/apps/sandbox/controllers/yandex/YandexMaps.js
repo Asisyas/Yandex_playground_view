@@ -6,17 +6,21 @@ qx.Class.define("ya.apps.sandbox.controllers.yandex.YandexMaps", {
 
     extend: ya.apps.sandbox.controllers.BaseController,
 
+    statics: {
+        /**
+         * Controller string reference
+         * @returns {string}
+         */
+        getName: function() {
+            return 'yandex-maps';
+        }
+    },
+
     construct: function(worker) {
         this.base(arguments);
     },
 
     members: {
-        /**
-         * @returns {string} controller name
-         */
-        getName: function() {
-            return 'yandex-maps';
-        },
 
         /**
          * Register routing
@@ -32,9 +36,27 @@ qx.Class.define("ya.apps.sandbox.controllers.yandex.YandexMaps", {
          * @param data      {Map} Worker data
          * @param callback  {Function}
          */
-        geocodeAction: function(data, callback) {
-            var geocoder = this.services.service("geocoder.yandex");
-            geocoder.geocode(data, callback);
+        geocodeAction: function(data) {
+            var geocoder    = this.services.service("geocoder.yandex");
+            var geoname     = data.geocode;
+            var statics     = ya.apps.sandbox.controllers.AbstractController;
+            if(!geoname) {
+                this.createWorkerAnswer(statics.ERROR_LOGIC,
+                    {
+                        message: "Parameter 'geocode' must be initialized"
+                    }
+                );
+            }
+            geocoder.geocode(data, qx.lang.Function.bind(function(status, geodata) {
+                //console.log(status, data);
+                console.log(statics.ERROR_NONE);
+                this.createWorkerAnswer(statics.ERROR_NONE,
+                    {
+                        code    : status,
+                        response: !status ? geodata.response : null
+                    }
+                );
+            } , this));
         }
     }
 
