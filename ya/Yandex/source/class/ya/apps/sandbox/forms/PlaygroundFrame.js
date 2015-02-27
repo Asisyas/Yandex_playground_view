@@ -32,11 +32,11 @@ qx.Class.define("ya.apps.sandbox.forms.PlaygroundFrame", {
         _onLoad: function() {
             this.block();
             var contentElem = this.getContentElement();
-            contentElem.setAttribute("sandbox", "allow-same-origin");
+            contentElem.setAttribute("sandbox", "allow-scripts");
         },
 
         _registerListeners: function() {
-            this.addListener("load", this._onLoad, this)
+            this.addListener("pear", this._onLoad, this)
         }
     }
 

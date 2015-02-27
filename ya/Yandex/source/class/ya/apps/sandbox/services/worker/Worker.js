@@ -85,6 +85,7 @@ qx.Class.define("ya.apps.sandbox.services.worker.Worker", {
     construct: function() {
         this.base(arguments);
         this.__status = 0;
+        this.__worker = null;
         this._registerListeners();
     },
 
@@ -108,14 +109,18 @@ qx.Class.define("ya.apps.sandbox.services.worker.Worker", {
          * Terminate application
          */
         terminate: function() {
-            var runStatus       =   this.getStatusCode("run"),
-                terminateStatus =   this.getStatusCode("terminate"),
-                currentStatus   =   this.__status,
-                invalidStatus   =   runStatus | terminateStatus;
 
-            if(currentStatus && invalidStatus & currentStatus == currentStatus) {
-                this.debug("Terminate");
-                this.__worker.terminate();
+            var statics = this.self(arguments);
+
+            var runStatus       =   statics.STATUS_RUN;
+            var terminateStatus =   statics.STATUS_TERMINATE;
+            var destroyedStatus =   statics.STATUS_DESTROYED;
+            var currentStatus   =   this.__status;
+            var invalidStatus   =   runStatus | terminateStatus | destroyedStatus;
+            var worker          =   this.__worker;
+            if(currentStatus && invalidStatus & currentStatus) {
+                console.log(worker);
+                worker.terminate();
             }
             this.__worker = undefined;
 

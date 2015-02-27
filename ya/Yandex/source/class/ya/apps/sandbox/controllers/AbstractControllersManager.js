@@ -8,6 +8,13 @@ qx.Class.define("ya.apps.sandbox.controllers.AbstractControllersManager", {
 
     type: "abstract",
 
+    events: {
+        /**
+         * Fired when html action
+         */
+        "html"          : "qx.event.type.Data"
+    },
+
     properties: {
         /**
          * Worker
@@ -80,7 +87,6 @@ qx.Class.define("ya.apps.sandbox.controllers.AbstractControllersManager", {
             if(o) {
                 this.debug("Remove old worker");
                 o.terminate();
-                o.dispose();
             }
             this._registerWorkerListeners(d);
             this.debug("Change worker");
@@ -96,9 +102,15 @@ qx.Class.define("ya.apps.sandbox.controllers.AbstractControllersManager", {
                 this.debug('worker success response', e);
                 this._sendWorkerResponse(e.getData());
             }, this);
+
             c.addListenerOnce("error", function(e) {
                 this.debug('worker error response', e);
                 this._sendWorkerResponse(e.getData());
+            }, this);
+
+            c.addListenerOnce("html", function(e) {
+                this.debug('worker html event', e);
+                this.fireDataEvent("html", e.getData());
             }, this);
         },
 

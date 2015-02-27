@@ -11,12 +11,17 @@ qx.Class.define("ya.apps.sandbox.controllers.AbstractController", {
         /**
          * Fired when success
          */
-        "success"  : "qx.event.type.Data",
+        "success"       : "qx.event.type.Data",
 
         /**
          * Fired when error
          */
-        "error"    : "qx.event.type.Data"
+        "error"         : "qx.event.type.Data",
+
+        /**
+         * Fired when html action
+         */
+        "html"          : "qx.event.type.Data"
     },
 
     statics: {
@@ -53,6 +58,7 @@ qx.Class.define("ya.apps.sandbox.controllers.AbstractController", {
     },
 
     members: {
+
         services: null,
 
         __routes: {},
@@ -68,19 +74,15 @@ qx.Class.define("ya.apps.sandbox.controllers.AbstractController", {
             this.addRoute("worker_error",       this.controllerErrorAction);
             // default action
             this.addRoute("index",              this.indexAction);
-            // insert html to iframe
+            // default action
             this.addRoute("html",               this.htmlAction);
-            // append html to iframe
-            this.addRoute("append_html",        this.htmlAppendAction)
         },
 
         call: function(route, data) {
             var callback = this.getRoute(route) ||
                 this.getRoute('controller_error');
             callback.call(null, data);
-
         },
-
 
         /**
          *  if Worker send incorrect data
@@ -110,29 +112,23 @@ qx.Class.define("ya.apps.sandbox.controllers.AbstractController", {
          * @param workerData
          */
         indexAction: function(workerData) {
-            var name = this.getName();
-            this.createWorkerAnswer(this.self(arguments).ERROR_NONE,
+            var statics = this.self(arguments);
+            var name    = statics.getName();
+            this.createWorkerAnswer(statics.ERROR_NONE,
                 {
                     workerData: workerData,
                     message: "Hello world!",
                     controller: name
-                });
+                }
+            );
         },
 
         /**
-         * Append html to sandbox iframe
-         * @param workerData {Map}
+         * Fired when worker want set html content
+         * @param workerData
          */
-        htmlAppendAction : function(workerData) {
-
-        },
-
-        /**
-         * Set data to sandbox iframe
-         * @param workerData {Map}
-         */
-        htmlAction : function(workerData) {
-
+        htmlAction: function(workerData) {
+            this.fireDataEvent("html", workerData);
         },
 
         /**

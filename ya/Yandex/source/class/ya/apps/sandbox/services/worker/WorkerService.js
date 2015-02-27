@@ -24,8 +24,9 @@ qx.Class.define("ya.apps.sandbox.services.worker.WorkerService", {
             if(!ya.apps.sandbox.services.worker.Worker.canRun()) {
                 return false;
             }
-            var w = new ya.apps.sandbox.services.worker.Worker(),
-                code;
+            var w       = new ya.apps.sandbox.services.worker.Worker();
+            var code    = null;
+
             if(isCode) {
                 code = new ya.apps.sandbox.services.worker.WorkerSourceCode();
             } else {
@@ -33,6 +34,7 @@ qx.Class.define("ya.apps.sandbox.services.worker.WorkerService", {
             }
             code.setSource(data);
             w.setCode(code);
+
             return w;
         }
     }

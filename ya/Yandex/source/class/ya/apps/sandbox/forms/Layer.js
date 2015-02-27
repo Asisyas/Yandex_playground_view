@@ -23,17 +23,36 @@ qx.Class.define("ya.apps.sandbox.forms.Layer", {
 
     members: {
 
+        /**
+         * Split panel (source || html)
+         */
         __splitPanel:   null,
 
+        /**
+         *  Playground iframe
+         */
         __playground:   null,
 
+        /**
+         * Code area form
+         */
         __codeArea:     null,
 
+        /**
+         * Start application button
+         */
         __applyBtn:     null,
 
-        __controllerObserver: null,
+        /**
+         * Api controller manager
+         */
+        __controllerManager: null,
 
 
+        /**
+         * Get source from codeArea
+         * @returns {String}
+         */
         getCode: function() {
             return this.__codeArea ? this.__codeArea.getCode(): "";
         },
@@ -50,7 +69,7 @@ qx.Class.define("ya.apps.sandbox.forms.Layer", {
                 this.add(mainMenu);
 
                 // init apply button
-                var applyBtn = new qx.ui.form.Button(this.tr("Run playground"), "resource/ya/test.png");
+                var applyBtn = new qx.ui.form.Button(this.tr("Run"), "resource/ya/test.png");
                 mainMenu.add(applyBtn);
                 applyBtn.setEnabled(this.getCode() != "");
 
@@ -94,9 +113,10 @@ qx.Class.define("ya.apps.sandbox.forms.Layer", {
          */
         _startPlayground: function() {
             var code = this.getCode();
-            console.log(code);
             var worker = ya.core.Services.getInstance().service("sandbox.worker").createWorker(code, true);
+            this._playgroundReset();
             this._initControllerManager(worker);
+
             worker.start();
         },
 
@@ -106,10 +126,45 @@ qx.Class.define("ya.apps.sandbox.forms.Layer", {
          * @private
          */
         _initControllerManager: function(worker) {
-            if(this.__controllerObserver) {
-                this.__controllerObserver.setWorker(worker);
+            if(this.__controllerManager) {
+                this.__controllerManager.setWorker(worker);
+                this._registerCManagerListeners(this.__controllerManager);
             } else {
-                this.__controllerObserver = new ya.apps.sandbox.controllers.ControllerManager(worker);
+                this.__controllerManager = new ya.apps.sandbox.controllers.ControllerManager(worker);
+            }
+        },
+
+        /**
+         * Register event handlers
+         * @param cm    {ya.apps.sandbox.controllers.AbstractControllersManager}
+         * @private
+         */
+        _registerCManagerListeners: function(cm) {
+            cm.addListener("html",          this._playgroundHtml,   this);
+        },
+
+        /**
+         * Reset playground content
+         * @private
+         */
+        _playgroundReset: function() {
+            this.__playground.setContent("");
+        },
+
+        /**
+         * Update playground content
+         * @param e
+         * @private
+         */
+        _playgroundHtml: function(e) {
+            var d           = e.getData();
+            var html        = d.html;
+            var isAppend    = Boolean(d.append);
+            var pl          = this.__playground;
+            if(isAppend) {
+                pl.appendContent(html);
+            } else {
+                pl.setContent(html);
             }
         },
 

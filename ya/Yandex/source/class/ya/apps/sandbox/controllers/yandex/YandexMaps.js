@@ -16,7 +16,7 @@ qx.Class.define("ya.apps.sandbox.controllers.yandex.YandexMaps", {
         }
     },
 
-    construct: function(worker) {
+    construct: function() {
         this.base(arguments);
     },
 
