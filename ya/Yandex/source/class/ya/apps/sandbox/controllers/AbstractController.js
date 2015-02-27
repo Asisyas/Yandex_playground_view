@@ -47,6 +47,7 @@ qx.Class.define("ya.apps.sandbox.controllers.AbstractController", {
     construct: function() {
         this.base(arguments);
         this.services = ya.core.Services.getInstance();
+        this.__routes = {};
         this._registerRoutes();
         this._registerListeners();
     },

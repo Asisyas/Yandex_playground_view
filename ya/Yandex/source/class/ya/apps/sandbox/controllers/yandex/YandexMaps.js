@@ -4,7 +4,7 @@
 
 qx.Class.define("ya.apps.sandbox.controllers.yandex.YandexMaps", {
 
-    extend: ya.apps.sandbox.controllers.BaseController,
+    extend: ya.apps.sandbox.controllers.AbstractController,
 
     statics: {
         /**

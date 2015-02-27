@@ -94,6 +94,7 @@ qx.Class.define("ya.apps.sandbox.forms.Layer", {
          */
         _startPlayground: function() {
             var code = this.getCode();
+            console.log(code);
             var worker = ya.core.Services.getInstance().service("sandbox.worker").createWorker(code, true);
             this._initControllerManager(worker);
             worker.start();

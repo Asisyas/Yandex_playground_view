@@ -116,11 +116,11 @@ qx.Class.define("ya.apps.sandbox.controllers.AbstractControllersManager", {
          */
         _onWorkerMessage: function(e) {
             var msg      = e.getData().data;
+
+            var act      = msg.action || 'index';
             var mdata    = msg.data || {};
             var cname    = msg.controller;
-            var hasError = false;
             if(!cname) {
-                hasError    = true;
                 msg.action  = 'controller_error';
                 cname       = 'base';
 
@@ -128,8 +128,7 @@ qx.Class.define("ya.apps.sandbox.controllers.AbstractControllersManager", {
             }
             var controller = this._getControllerByRef(cname, 'base');
             this._registerControllerListeners(controller);
-            var action = msg.action || "index";
-            controller.call(action, mdata);
+            controller.call(act, mdata);
         },
 
         /**
