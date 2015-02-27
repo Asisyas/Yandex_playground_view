@@ -8,21 +8,38 @@ qx.Class.define("ya.apps.sandbox.forms.PlaygroundFrame", {
 
     include : qx.ui.core.MBlocker,
 
-    construct: function() {
-        this.base(arguments, null);
+    events: {
+        "_content_set"      : "qx.event.type.Data"
+    },
+
+    construct: function(source) {
+        this.base(arguments, source);
+        this.__srcContent = "";
         this._registerListeners();
     },
 
     members:{
 
-        appendContent: function(content) {
-            var cnt = this.getContentElement().getAttribute("srcdoc") || "";
-            cnt += content;
-            this.setContent(cnt);
+        __srcContent: "",
+
+        getContent: function() {
+            return this.__srcContent;
         },
 
-        setContent: function(content) {
-            this.getContentElement().setAttribute("srcdoc", content);
+        setContent: function(content, isAppend) {
+            var src = "";
+            if(isAppend) {
+                src = this.getContent();
+            }
+            src += content;
+            this.__srcContent = src;
+            this.fireDataEvent('_content_set');
+        },
+
+
+        _setContent: function() {
+            var src = this.getContent();
+            this.getContentElement().setAttribute('srcdoc', src);
         },
 
         /**
@@ -32,11 +49,15 @@ qx.Class.define("ya.apps.sandbox.forms.PlaygroundFrame", {
         _onLoad: function() {
             this.block();
             var contentElem = this.getContentElement();
-            contentElem.setAttribute("sandbox", "allow-scripts");
+            contentElem.setAttribute("sandbox", "allow-same-origin");
+            this._setContent();
         },
 
         _registerListeners: function() {
-            this.addListener("pear", this._onLoad, this)
+            this.addListener("appear", function() {
+                this._onLoad();
+                this.addListener("_content_set", this._setContent, this);
+            }, this);
         }
     }
 

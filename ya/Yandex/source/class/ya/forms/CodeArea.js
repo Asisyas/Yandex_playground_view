@@ -2,7 +2,7 @@
  * Created by kost on 17.02.15.
  * Container for the source code editor.
  *
- * @asset(ya/editor/*)
+ * @asset(resource/ya/editor/*)
  */
 qx.Class.define("ya.forms.CodeArea", {
     extend : qx.ui.container.Composite,

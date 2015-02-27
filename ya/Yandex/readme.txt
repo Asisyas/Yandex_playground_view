@@ -19,9 +19,36 @@ onmessage = function(e) {
 
 postMessage({
   controller: "yandex-maps",
-  action: "geocode",
+  action: "html",
   data: {
-    geocode: "Минск"
+    html: "a",
+    append: true
   }
 });
 
+postMessage({
+  controller: "yandex-maps",
+  action: "html",
+  data: {
+    html: "b",
+    append: true
+  }
+});
+
+postMessage({
+  controller: "yandex-maps",
+  action: "html",
+  data: {
+    html: "c",
+    append: true
+  }
+});
+
+postMessage({
+  controller: "yandex-maps",
+  action: "html",
+  data: {
+    html: "d",
+    append: true
+  }
+});

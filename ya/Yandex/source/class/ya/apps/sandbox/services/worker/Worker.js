@@ -119,7 +119,6 @@ qx.Class.define("ya.apps.sandbox.services.worker.Worker", {
             var invalidStatus   =   runStatus | terminateStatus | destroyedStatus;
             var worker          =   this.__worker;
             if(currentStatus && invalidStatus & currentStatus) {
-                console.log(worker);
                 worker.terminate();
             }
             this.__worker = undefined;
@@ -293,7 +292,6 @@ qx.Class.define("ya.apps.sandbox.services.worker.Worker", {
 
     destruct: function() {
         this._disposeObjects("__worker");
-        this.__status = null;
     }
 
 });

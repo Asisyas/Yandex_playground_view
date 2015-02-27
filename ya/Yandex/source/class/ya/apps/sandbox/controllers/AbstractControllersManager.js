@@ -87,6 +87,7 @@ qx.Class.define("ya.apps.sandbox.controllers.AbstractControllersManager", {
             if(o) {
                 this.debug("Remove old worker");
                 o.terminate();
+                o.dispose();
             }
             this._registerWorkerListeners(d);
             this.debug("Change worker");
@@ -137,13 +138,8 @@ qx.Class.define("ya.apps.sandbox.controllers.AbstractControllersManager", {
 
             var act      = msg.action || 'index';
             var mdata    = msg.data || {};
-            var cname    = msg.controller;
-            if(!cname) {
-                msg.action  = 'controller_error';
-                cname       = 'base';
+            var cname    = msg.controller || 'base';
 
-                return;
-            }
             var controller = this._getControllerByRef(cname, 'base');
             this._registerControllerListeners(controller);
             controller.call(act, mdata);
