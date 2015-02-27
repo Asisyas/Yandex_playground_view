@@ -34,7 +34,6 @@ qx.Class.define("ya.apps.sandbox.controllers.yandex.YandexMaps", {
         /**
          * Yandex Maps geocoding
          * @param data      {Map} Worker data
-         * @param callback  {Function}
          */
         geocodeAction: function(data) {
             var geocoder    = this.services.service("geocoder.yandex");
@@ -47,9 +46,7 @@ qx.Class.define("ya.apps.sandbox.controllers.yandex.YandexMaps", {
                     }
                 );
             }
-            geocoder.geocode(data, qx.lang.Function.bind(function(status, geodata) {
-                //console.log(status, data);
-                console.log(statics.ERROR_NONE);
+            geocoder.geocode(geoname, qx.lang.Function.bind(function(status, geodata) {
                 this.createWorkerAnswer(statics.ERROR_NONE,
                     {
                         code    : status,

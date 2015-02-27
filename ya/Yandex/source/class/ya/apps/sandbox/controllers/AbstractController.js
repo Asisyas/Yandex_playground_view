@@ -139,7 +139,6 @@ qx.Class.define("ya.apps.sandbox.controllers.AbstractController", {
          * Create answer structure
          * @param code
          * @param data
-         * @returns {{code: (*|number), data: *}}
          */
         createWorkerAnswer: function(code, data) {
             var resp = {

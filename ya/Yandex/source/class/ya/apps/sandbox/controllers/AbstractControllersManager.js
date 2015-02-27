@@ -93,11 +93,17 @@ qx.Class.define("ya.apps.sandbox.controllers.AbstractControllersManager", {
          */
         _registerControllerListeners: function(c) {
             c.addListenerOnce("success", function(e) {
-                console.log('CONTROLLER_SUCCESS', e);
+                this.debug('worker success response', e);
+                this._sendWorkerResponse(e.getData());
             }, this);
             c.addListenerOnce("error", function(e) {
-                console.log('CONTROLLER_ERROR', e);
+                this.debug('worker error response', e);
+                this._sendWorkerResponse(e.getData());
             }, this);
+        },
+
+        _sendWorkerResponse: function(resp) {
+            this.getWorker().call(resp);
         },
 
         /**
