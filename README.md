@@ -7,6 +7,8 @@
  <a href="http://ya-play.16mb.com/api/#ya" target="_blank"> Онлайн документация для разработчика </a>
  
  <a href="http://ya-play.16mb.com/test/" target="_blank"> Юнит-тесты </a>
+ 
+ <a href="https://github.com/Asisyas/Yandex_playground_view/issues" target="_blank"> Важные проблемы </a>
 
 ## Ограничения:
 
