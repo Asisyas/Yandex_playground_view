@@ -2,9 +2,9 @@
  * Created by kost on 17.02.15.
  * Container for the source code editor.
  *
- * @asset(resource/ya/editor/*)
+ * @asset(ya/editor/*)
  */
-qx.Class.define("ya.forms.CodeArea", {
+qx.Class.define("ya.apps.sandbox.forms.CodeArea", {
     extend : qx.ui.container.Composite,
 
     include : qx.ui.core.MBlocker,

@@ -71,41 +71,26 @@ qx.Class.define("ya.apps.sandbox.forms.Layer", {
             return this.__codeArea ? this.__codeArea.getCode(): "";
         },
 
+        setCode: function(code) {
+            this.__codeArea.setCode(code);
+        },
+
         /**
          * Create form items
          * @param callback {Function}
          * @private
          */
         _createForm: function(callback) {
-            ya.forms.CodeArea.loadAce(function() {
+            ya.apps.sandbox.forms.CodeArea.loadAce(function() {
+                // Init main menu layer
                 var mainMenu = new ya.apps.sandbox.forms.MainMenu();
                 this.add(mainMenu);
-
-                // init apply button
-                var applyBtn = new qx.ui.form.Button(this.tr("Run"), "resource/ya/test.png");
-                mainMenu.add(applyBtn);
-                applyBtn.setEnabled(this.getCode() != "");
-
-                var examples = new ya.apps.sandbox.forms.ExamplesWidget();
-                mainMenu.add(examples);
-
 
                 this.__splitPanel = new qx.ui.splitpane.Pane("horizontal");
                 this.add(this.__splitPanel, {flex: 1});
 
-                // Play source
-                applyBtn.addListener("execute", function() {
-                    this._startPlayground();
-                    this.fireDataEvent("RUN_PLAYGROUND");
-                }, this);
-                // Change code
-                this.addListener("CODE_CHANGE", function() {
-                    this.__applyBtn.setEnabled(this.getCode() != "");
-                }, this);
-                this.__applyBtn = applyBtn;
-
                 // init code area
-                var codeArea = new ya.forms.CodeArea();
+                var codeArea = new ya.apps.sandbox.forms.CodeArea();
                 this.__splitPanel.add(codeArea,1);
                 codeArea.init();
                 codeArea.useHighlight(true);
@@ -117,6 +102,31 @@ qx.Class.define("ya.apps.sandbox.forms.Layer", {
                 this.__playgroundLayer = new qx.ui.container.Composite();
                 this.__playgroundLayer.setLayout(new qx.ui.layout.Dock());
                 this.__splitPanel.add(this.__playgroundLayer,2);
+
+
+                // Init memu tools
+                // init apply button
+                var applyBtn = new qx.ui.form.Button(this.tr("Run"), "resource/ya/test.png");
+                this.__applyBtn = applyBtn;
+                mainMenu.add(applyBtn);
+                applyBtn.setEnabled(this.getCode() != "");
+                /// Init main tools
+                // Play source
+                applyBtn.addListener("execute", function() {
+                    this._startPlayground();
+                    this.fireDataEvent("RUN_PLAYGROUND");
+                }, this);
+                // Change code
+                this.addListener("CODE_CHANGE", function() {
+                    this.__applyBtn.setEnabled(this.getCode() != "");
+                }, this);
+
+                var examples = new ya.apps.sandbox.forms.ExamplesWidget();
+                examples.addListener("example_source_change", function(e) {
+                    this.setCode(e.getData());
+                }, this);
+                mainMenu.add(examples);
+
 
                 callback.call(this);
             }, this);
